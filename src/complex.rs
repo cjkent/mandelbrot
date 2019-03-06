@@ -9,7 +9,7 @@ pub struct Complex {
 
 impl Complex {
     pub fn new(real: f64, imag: f64) -> Complex {
-        Complex { real: real, imag: imag }
+        Complex { real, imag }
     }
 }
 
@@ -25,6 +25,9 @@ impl Mul for Complex {
     type Output = Complex;
 
     fn mul(self, other: Complex) -> Complex {
-        Complex::new(self.real * other.real - self.imag * other.imag, self.real * other.imag + self.imag * other.real)
+        Complex::new(
+            self.real * other.real - self.imag * other.imag,
+            self.real * other.imag + self.imag * other.real
+        )
     }
 }

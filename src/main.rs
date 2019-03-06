@@ -11,7 +11,7 @@ mod colour;
 mod vector3d;
 
 use threadpool::ThreadPool;
-use std::sync::mpsc::channel;
+//use std::sync::mpsc::channel;
 use complex::Complex;
 use std::vec::Vec;
 use bmp::Image;
@@ -31,7 +31,7 @@ fn main() {
     info!("time taken to calculate set {:.*}ms", 2, (time::precise_time_s() - start_time) * 1000f64);
     info!("set_data size = {}", set_data.data.len());
     let img = render(&set_data);
-    let _ = img.save("/Users/cj/tmp/mandelbrot.bmp");
+    let _ = img.save("/Users/chris/tmp/mandelbrot.bmp");
 }
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -48,16 +48,17 @@ struct SetDefinition {
 /// Definition which specifies how to calculate the Mandelbrot Set for an area of
 /// the complex plane.
 impl SetDefinition {
-
     // TODO Replace this with a builder
-    fn new(min_real: f64,
-           max_real: f64,
-           min_imag: f64,
-           max_imag: f64,
-           width_px: u32,
-           oversampling: u32,
-           max_iterations: u32,
-           escape_radius: f64) -> SetDefinition {
+    fn new(
+        min_real: f64,
+        max_real: f64,
+        min_imag: f64,
+        max_imag: f64,
+        width_px: u32,
+        oversampling: u32,
+        max_iterations: u32,
+        escape_radius: f64,
+    ) -> SetDefinition {
 
         // TODO validate min and max values are different and in the correct order
 
@@ -95,7 +96,7 @@ impl SetDefinition {
         for i in 0..count {
             let origin = Complex::new(self.origin.real, imag);
             let height = heights[i as usize];
-            let def = SetDefinition { origin: origin, height_px: height, .. *self };
+            let def = SetDefinition { origin, height_px: height, ..*self };
             defs.push(def);
             imag += height as f64 * self.px_size;
         }
@@ -125,7 +126,7 @@ fn escape_iterations(point: Complex, max_iterations: u32, escape_radius: f64) ->
         let zri = z.real * z.imag;
 
         if zr2 + zi2 > escape_value {
-            return i
+            return i;
         }
         z = Complex::new(zr2 - zi2 + point.real, zri + zri + point.imag);
     }
@@ -239,13 +240,15 @@ fn render(set: &SetData) -> Image {
         let real_idx = x;
         // need to reverse the y co-ordinate because the image origin is top left
         let imag_idx = set.def.height_px - y - 1;
-        let clr = colour::pixel_colour(&set.data,
-                                       real_idx,
-                                       imag_idx,
-                                       set.def.width_px,
-                                       set.def.oversampling,
-                                       min_iter,
-                                       &colours);
+        let clr = colour::pixel_colour(
+            &set.data,
+            real_idx,
+            imag_idx,
+            set.def.width_px,
+            set.def.oversampling,
+            min_iter,
+            &colours,
+        );
         img.set_pixel(x, y, clr.pixel());
     }
     img
@@ -287,10 +290,10 @@ mod tests {
             escape_radius: 2.0,
         };
         let expected = vec![
-            SetDefinition { origin: Complex::new(1.0, 2.0), height_px: 25, .. def },
-            SetDefinition { origin: Complex::new(1.0, 2.25), height_px: 25, .. def },
-            SetDefinition { origin: Complex::new(1.0, 2.5), height_px: 25, .. def },
-            SetDefinition { origin: Complex::new(1.0, 2.75), height_px: 25, .. def },
+            SetDefinition { origin: Complex::new(1.0, 2.0), height_px: 25, ..def },
+            SetDefinition { origin: Complex::new(1.0, 2.25), height_px: 25, ..def },
+            SetDefinition { origin: Complex::new(1.0, 2.5), height_px: 25, ..def },
+            SetDefinition { origin: Complex::new(1.0, 2.75), height_px: 25, ..def },
         ];
         assert_eq!(def.split(4), expected);
     }
@@ -307,9 +310,9 @@ mod tests {
             escape_radius: 2.0,
         };
         let expected = vec![
-            SetDefinition { origin: Complex::new(1.0, 2.0), height_px: 34, .. def },
-            SetDefinition { origin: Complex::new(1.0, 2.34), height_px: 33, .. def },
-            SetDefinition { origin: Complex::new(1.0, 2.67), height_px: 33, .. def },
+            SetDefinition { origin: Complex::new(1.0, 2.0), height_px: 34, ..def },
+            SetDefinition { origin: Complex::new(1.0, 2.34), height_px: 33, ..def },
+            SetDefinition { origin: Complex::new(1.0, 2.67), height_px: 33, ..def },
         ];
         assert_eq!(def.split(3), expected);
     }

@@ -14,7 +14,7 @@ pub struct Vector3d {
 
 impl Vector3d {
     pub fn new(x: f64, y: f64, z: f64) -> Vector3d {
-        Vector3d { x: x, y: y, z: z }
+        Vector3d { x, y, z }
     }
 
     pub fn from_colour(col: &Colour) -> Vector3d {

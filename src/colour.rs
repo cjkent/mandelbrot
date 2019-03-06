@@ -36,13 +36,15 @@ impl Colour {
     }
 }
 
-pub fn pixel_colour(set: &Vec<u32>,
-                    real_idx: u32,
-                    imag_idx: u32,
-                    width_px: u32,
-                    oversampling: u32,
-                    min_iter: u32,
-                    colours: &Vec<Colour>) -> Colour {
+pub fn pixel_colour(
+    set: &Vec<u32>,
+    real_idx: u32,
+    imag_idx: u32,
+    width_px: u32,
+    oversampling: u32,
+    min_iter: u32,
+    colours: &Vec<Colour>,
+) -> Colour {
 
     // index of the bottom-left pixel
     let idx_base = (width_px * imag_idx * oversampling * oversampling) + (real_idx * oversampling);
@@ -157,9 +159,11 @@ mod tests {
 
     #[test]
     fn relative_vectors_not_empty() {
-        let v = vec![Vector3d::new(1.0, 2.0, 3.0),
-                     Vector3d::new(1.0, 3.0, 4.0),
-                     Vector3d::new(3.0, 2.0, 4.0)];
+        let v = vec![
+            Vector3d::new(1.0, 2.0, 3.0),
+            Vector3d::new(1.0, 3.0, 4.0),
+            Vector3d::new(3.0, 2.0, 4.0),
+        ];
         let exp = vec![Vector3d::new(0.0, 1.0, 1.0), Vector3d::new(2.0, -1.0, 0.0)];
         assert_eq!(super::relative_vectors(&v), exp);
     }
@@ -167,43 +171,52 @@ mod tests {
     #[test]
     fn palette_2_colours_on_axis() {
         let cols = palette(6, &vec![Colour::new(0, 0, 0), Colour::new(255, 0, 0)]);
-        let expected = vec![Colour::new(0, 0, 0),
-                            Colour::new(51, 0, 0),
-                            Colour::new(102, 0, 0),
-                            Colour::new(153, 0, 0),
-                            Colour::new(204, 0, 0),
-                            Colour::new(255, 0, 0)];
+        let expected = vec![
+            Colour::new(0, 0, 0),
+            Colour::new(51, 0, 0),
+            Colour::new(102, 0, 0),
+            Colour::new(153, 0, 0),
+            Colour::new(204, 0, 0),
+            Colour::new(255, 0, 0),
+        ];
         assert_eq!(cols, expected);
     }
 
     #[test]
     fn palette_2_colours_long_diagonal() {
         let cols = palette(6, &vec![Colour::new(0, 0, 0), Colour::new(255, 255, 255)]);
-        let expected = vec![Colour::new(0, 0, 0),
-                            Colour::new(51, 51, 51),
-                            Colour::new(102, 102, 102),
-                            Colour::new(153, 153, 153),
-                            Colour::new(204, 204, 204),
-                            Colour::new(255, 255, 255)];
+        let expected = vec![
+            Colour::new(0, 0, 0),
+            Colour::new(51, 51, 51),
+            Colour::new(102, 102, 102),
+            Colour::new(153, 153, 153),
+            Colour::new(204, 204, 204),
+            Colour::new(255, 255, 255),
+        ];
         assert_eq!(cols, expected);
     }
 
     #[test]
     fn palette_3_colours_along_axes() {
-        let cols = palette(11, &vec![Colour::new(0, 0, 0),
-                                     Colour::new(255, 0, 0),
-                                     Colour::new(255, 255, 0)]);
-        let expected = vec![Colour::new(0, 0, 0),
-                            Colour::new(51, 0, 0),
-                            Colour::new(102, 0, 0),
-                            Colour::new(153, 0, 0),
-                            Colour::new(204, 0, 0),
-                            Colour::new(255, 0, 0),
-                            Colour::new(255, 51, 0),
-                            Colour::new(255, 102, 0),
-                            Colour::new(255, 153, 0),
-                            Colour::new(255, 204, 0),
-                            Colour::new(255, 255, 0),];
+        let colours = &vec![
+            Colour::new(0, 0, 0),
+            Colour::new(255, 0, 0),
+            Colour::new(255, 255, 0),
+        ];
+        let cols = palette(11, colours);
+        let expected = vec![
+            Colour::new(0, 0, 0),
+            Colour::new(51, 0, 0),
+            Colour::new(102, 0, 0),
+            Colour::new(153, 0, 0),
+            Colour::new(204, 0, 0),
+            Colour::new(255, 0, 0),
+            Colour::new(255, 51, 0),
+            Colour::new(255, 102, 0),
+            Colour::new(255, 153, 0),
+            Colour::new(255, 204, 0),
+            Colour::new(255, 255, 0),
+        ];
         assert_eq!(cols, expected);
     }
 }

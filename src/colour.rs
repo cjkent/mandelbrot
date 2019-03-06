@@ -13,7 +13,7 @@ pub struct Colour {
 
 impl Colour {
     pub fn new(r: u8, g: u8, b: u8) -> Colour {
-        Colour { r: r, g: g, b: b }
+        Colour { r, g, b }
     }
 
     pub fn from_vector3d(vec3d: &Vector3d) -> Colour {

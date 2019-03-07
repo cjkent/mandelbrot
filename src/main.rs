@@ -67,12 +67,12 @@ impl SetDefinition {
 
         SetDefinition {
             origin: Complex::new(min_real, min_imag),
-            px_size: px_size,
-            width_px: width_px,
+            px_size,
+            width_px,
             height_px: (height_px as u32),
-            oversampling: oversampling,
-            max_iterations: max_iterations,
-            escape_radius: escape_radius,
+            oversampling,
+            max_iterations,
+            escape_radius,
         }
     }
 
@@ -198,7 +198,7 @@ fn calc_set_parallel(set_def: &SetDefinition, threads: u32) -> SetData {
     for v in data_vec.iter_mut() {
         data.append(v);
     }
-    SetData { def: *set_def, data: data }
+    SetData { def: *set_def, data }
 }
 
 /// Calculates the set defined by `set_def`.

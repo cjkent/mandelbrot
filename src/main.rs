@@ -23,7 +23,7 @@ fn main() {
     env_logger::init().unwrap();
     let start_time = time::precise_time_s();
 //    let set_def = SetDefinition::new(-0.77, -0.74, 0.07, 0.11, 1200, 2, 400, 10.0);
-    let set_def = SetDefinition::new(-0.77, -0.76, 0.09, 0.10, 1200, 2, 400, 10.0);
+    let set_def = SetDefinition::new(-0.77, -0.76, 0.09, 0.10, 1200, 4, 400, 10.0);
 //    let set_def = SetDefinition::new(-2.0, 1.0, -1.0, 1.0, 1200, 2, 100, 10.0);
     info!("set_def = {:?}", set_def);
     // TODO use std::env::args() or getopts to specify the number of threads?
